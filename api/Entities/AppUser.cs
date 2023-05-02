@@ -1,4 +1,4 @@
-namespace backend.Entities
+namespace api.Entities
 {
     public class AppUser
     {

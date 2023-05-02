@@ -475,5 +475,5 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-backend/appsettings.json
-backend/table.db
+api/appsettings.json
+api/table.db
