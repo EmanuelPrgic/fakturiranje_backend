@@ -20,7 +20,6 @@ namespace api.DTOs
         public string Bankajedan { get; set; }
         public string Bankadva { get; set; }
         public string Bankatri { get; set; }
-        [Required]
         public string Swift { get; set; }
         [Required]
         public string Tip { get; set; }

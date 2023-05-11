@@ -17,15 +17,23 @@ namespace api.Controllers
         {
             _context = context;
         }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Partner>>> GetPartner()
+        {
+            var partners = await _context.Partneri.ToListAsync();
+
+            return partners;
+        }
         
         [HttpPost("add")]
         public async Task<ActionResult<PartnerDto>> Add(AddPartnerDto addpartnerDto)
         {
             var partner = new Partner
             {
-                Naziv = addpartnerDto.Naziv.ToLower(),
-                Adresa = addpartnerDto.Adresa.ToLower(),
-                Mjesto = addpartnerDto.Mjesto.ToLower(),
+                Naziv = addpartnerDto.Naziv,
+                Adresa = addpartnerDto.Adresa,
+                Mjesto = addpartnerDto.Mjesto,
                 BrojPoste = addpartnerDto.Brojposte,
                 Mb = addpartnerDto.Mb,
                 Pdv = addpartnerDto.Pdv,
