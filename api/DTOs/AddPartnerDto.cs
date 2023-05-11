@@ -11,15 +11,15 @@ namespace api.DTOs
         [Required]
         public string Mjesto { get; set; }
         [Required]
-        public int BrojPoste { get; set; }
+        public int Brojposte { get; set; }
         [Required]
         public int Mb { get; set; }
         [Required]
         public int Pdv { get; set; }
         [Required]
-        public string BankaJedan { get; set; }
-        public string BankaDva { get; set; }
-        public string BankaTri { get; set; }
+        public string Bankajedan { get; set; }
+        public string Bankadva { get; set; }
+        public string Bankatri { get; set; }
         [Required]
         public string Swift { get; set; }
         [Required]
