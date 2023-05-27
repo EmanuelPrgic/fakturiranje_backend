@@ -11,10 +11,12 @@ namespace api.Entities
         public int Rabat { get; set; }
         public int IznosRabata { get; set; }
         public int Pdv { get; set; }
-        public int Vrijednost { get; set; }
+        public int Osnovica { get; set; }
+        public int IznosPdv { get; set; }
+        public int UkupanIznos { get; set; }
 
-        public int ZaglavljeRacunaId { get; set; }
+        public int BrojRacuna { get; set; }
 
-        public ZaglavljeRacuna ZaglavljeRacuna { get; set; }
+        public ZaglavljeRacuna ZaglavljeRacuna { get; set; } = null!;
     }
 }

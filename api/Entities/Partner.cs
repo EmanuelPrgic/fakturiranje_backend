@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Collections.Generic;
+
 namespace api.Entities
 {
     public class Partner
@@ -16,5 +19,6 @@ namespace api.Entities
         public string Swift { get; set; }
         public string Tip { get; set; }
         public string Drzava { get; set; }
+        public ICollection<ZaglavljeRacuna> ZaglavljaRacuna { get;} = new List<ZaglavljeRacuna>();
     }
 }

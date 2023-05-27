@@ -1,4 +1,7 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using api.Controllers;
 
 namespace api.Entities
 {
@@ -22,16 +25,16 @@ namespace api.Entities
 
         public int FiskalniBroj { get; set; }
 
-        public int KupacId { get; set; }
-
-        public int Tecaj { get; set; }
+        public double Tecaj { get; set; } = 1.95583;
 
         public string Napomena { get; set; }
 
         public int UkupanIznos { get; set; }
 
-        public string Status { get; set; }
+        public string Status { get; set; } = "Kreireana";
 
-        public StavkeRacuna StavkeRacuna { get; set; }
+        public int PartnerId { get; set; }
+
+        public Partner Partner { get; set;} = null!;
     }
 }

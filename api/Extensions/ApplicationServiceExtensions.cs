@@ -1,3 +1,4 @@
+using System;
 using api.data;
 using api.Interfaces;
 using api.Services;
@@ -17,6 +18,10 @@ namespace api.Extensions
 
             services.AddCors();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IPartnerRepository, PartnerRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IFaktureRepository, FaktureRepository>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             return services;
         }
