@@ -11,6 +11,7 @@ namespace api.DTOs
         public int Kolicina { get; set; }
         [Required]
         public int Cijenadeviza { get; set; }
+        public int Cijenakm { get; set; }
         public int Fakturnavrijednost { get; set; }
         public int Rabat { get; set; }
         public int Iznosrabata { get; set; }

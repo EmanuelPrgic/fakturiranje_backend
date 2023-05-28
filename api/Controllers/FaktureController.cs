@@ -68,7 +68,7 @@ namespace api.Controllers
             return Ok(stavkaToReturn);
         }
 
-        [HttpPost("zaglavlje/add")]
+        [HttpPost("fakture/add")]
         public async Task<ActionResult<ZaglavljeRacunaDto>> AddZaglavlje(ZaglavljeRacunaDto zaglavljeRacunaDto)
         {
             if (await ZaglavljeExists(zaglavljeRacunaDto.Brojracuna)) return BadRequest("Broj racuna vec postoji");
@@ -113,6 +113,7 @@ namespace api.Controllers
                 Opis = stavkeRacunaDto.Opis,
                 Kolicina = stavkeRacunaDto.Kolicina,
                 CijenaDeviza = stavkeRacunaDto.Cijenadeviza,
+                CijenaKM = stavkeRacunaDto.Cijenakm,
                 FakturnaVrijednost = stavkeRacunaDto.Fakturnavrijednost,
                 Rabat = stavkeRacunaDto.Rabat,
                 IznosRabata = stavkeRacunaDto.Iznosrabata,
@@ -131,6 +132,7 @@ namespace api.Controllers
                 Opis = stavka.Opis,
                 Kolicina = stavka.Kolicina,
                 Cijenadeviza = stavka.CijenaDeviza,
+                Cijenakm = stavka.CijenaKM,
                 Fakturnavrijednost = stavka.FakturnaVrijednost,
                 Rabat = stavka.Rabat,
                 Iznosrabata = stavka.IznosRabata,
