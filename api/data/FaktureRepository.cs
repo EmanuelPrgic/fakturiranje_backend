@@ -17,29 +17,14 @@ namespace api.data
             _context = context;
         }
 
-        public async Task<ZaglavljeRacuna> GetZaglavljeById(int id)
+        public async Task<ZaglavljeRacuna> GetFakturuByBrojRacuna(int brojracuna)
         {
-            return await _context.ZaglavljeRacuna.FindAsync(id);
+            return await _context.ZaglavljeRacuna.FindAsync(brojracuna);
         }
 
-        public async Task<StavkeRacuna> GetStavkeById(int id)
-        {
-            return await _context.StavkeRacuna.FindAsync(id);
-        }
-
-        public async Task<ZaglavljeRacuna> GetZaglavljeByBrojRacuna(int brojRacuna)
-        {
-            return await _context.ZaglavljeRacuna.FindAsync(brojRacuna);
-        }
-
-        public async Task<IEnumerable<ZaglavljeRacuna>> GetZaglavljaAsync()
+        public async Task<IEnumerable<ZaglavljeRacuna>> GetFaktureAsync()
         {
             return await _context.ZaglavljeRacuna.ToListAsync();
-        }
-
-        public async Task<IEnumerable<StavkeRacuna>> GetStavkeAsync()
-        {
-            return await _context.StavkeRacuna.ToListAsync();
         }
 
         public async Task<bool> SaveAllAsync()
@@ -47,14 +32,9 @@ namespace api.data
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public void ZaglavljeUpdate(ZaglavljeRacuna zaglavljeRacuna)
+        public void FakturaUpdate(ZaglavljeRacuna zaglavljeRacuna)
         {
             _context.Entry(zaglavljeRacuna).State = EntityState.Modified;
-        }
-
-        public void StavkeUpdate(StavkeRacuna stavkeRacuna)
-        {
-            _context.Entry(stavkeRacuna).State = EntityState.Modified;
         }
     }
 }

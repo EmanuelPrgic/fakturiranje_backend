@@ -21,6 +21,7 @@ namespace api.Extensions
             services.AddScoped<IPartnerRepository, PartnerRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IFaktureRepository, FaktureRepository>();
+            services.AddScoped<IUslugeRepository, UslugeRepository>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             return services;

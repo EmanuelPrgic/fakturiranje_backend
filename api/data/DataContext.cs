@@ -11,7 +11,6 @@ namespace api.data
         
         public DbSet<AppUser> Users { get; set; }
         public DbSet<Partner> Partneri { get; set; }
-        public DbSet<Usluga> Usluge { get; set; }
         public DbSet<StavkeRacuna> StavkeRacuna { get; set; }
         public DbSet<ZaglavljeRacuna> ZaglavljeRacuna { get; set; }
     }

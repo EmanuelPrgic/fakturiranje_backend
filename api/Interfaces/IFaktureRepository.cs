@@ -9,13 +9,9 @@ namespace api.Interfaces
 {
     public interface IFaktureRepository
     {
-        void ZaglavljeUpdate(ZaglavljeRacuna zaglavljeRacuna);
-        void StavkeUpdate(StavkeRacuna stavkeRacuna);
+        void FakturaUpdate(ZaglavljeRacuna zaglavljeRacuna);
         Task<bool> SaveAllAsync();
-        Task<IEnumerable<ZaglavljeRacuna>> GetZaglavljaAsync();
-        Task<IEnumerable<StavkeRacuna>> GetStavkeAsync();
-        Task<ZaglavljeRacuna> GetZaglavljeByBrojRacuna(int brojRacuna);
-        Task<ZaglavljeRacuna> GetZaglavljeById(int id);
-        Task<StavkeRacuna> GetStavkeById(int id);
+        Task<IEnumerable<ZaglavljeRacuna>> GetFaktureAsync();
+        Task<ZaglavljeRacuna> GetFakturuByBrojRacuna(int brojracuna);
     }
 }

@@ -29,8 +29,6 @@ namespace api.Entities
 
         public string Napomena { get; set; }
 
-        public int UkupanIznos { get; set; }
-
         public string Status { get; set; } = "Kreireana";
 
         public int PartnerId { get; set; }

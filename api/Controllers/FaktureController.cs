@@ -28,52 +28,32 @@ namespace api.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("zaglavlje")]
-        public async Task<ActionResult<IEnumerable<ZaglavljeRacunaDto>>> GetZaglavlja()
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ZaglavljeRacunaDto>>> GetFakture()
         {
-            var zaglavlja = await _faktureRepository.GetZaglavljaAsync();
+            var faktura = await _faktureRepository.GetFaktureAsync();
             
-            var zaglavljaToReturn = _mapper.Map<IEnumerable<ZaglavljeRacunaDto>>(zaglavlja);
+            var fakturaToReturn = _mapper.Map<IEnumerable<ZaglavljeRacunaDto>>(faktura);
 
-            return Ok(zaglavljaToReturn);
+            return Ok(fakturaToReturn);
         }
 
-        [HttpGet("stavke")]
-        public async Task<ActionResult<IEnumerable<StavkeRacunaDto>>> GetStavke()
+        [HttpGet("{brojracuna}")]
+        public async Task<ActionResult<IEnumerable<ZaglavljeRacunaDto>>> GetFakturuByBrojRacuna(int brojracuna)
         {
-            var stavke = await _faktureRepository.GetStavkeAsync();
-
-            var stavkeToReturn = _mapper.Map<IEnumerable<StavkeRacunaDto>>(stavke);
-
-            return Ok(stavkeToReturn);
-        }
-
-        [HttpGet("zaglavlje/id")]
-        public async Task<ActionResult<IEnumerable<ZaglavljeRacunaDto>>> GetZaglavlje(int id)
-        {
-            var zaglavlje = await _faktureRepository.GetZaglavljeById(id);
+            var faktura = await _faktureRepository.GetFakturuByBrojRacuna(brojracuna);
             
-            var zaglavljeToReturn = _mapper.Map<ZaglavljeRacunaDto>(zaglavlje);
+            var fakturaToReturn = _mapper.Map<ZaglavljeRacunaDto>(faktura);
 
-            return Ok(zaglavljeToReturn);
+            return Ok(fakturaToReturn);
         }
 
-        [HttpGet("stavke/id")]
-        public async Task<ActionResult<IEnumerable<StavkeRacunaDto>>> GetStavku(int id)
+        [HttpPost("add")]
+        public async Task<ActionResult<ZaglavljeRacunaDto>> AddFakturu(ZaglavljeRacunaDto zaglavljeRacunaDto)
         {
-            var stavka = await _faktureRepository.GetStavkeById(id);
-            
-            var stavkaToReturn = _mapper.Map<StavkeRacunaDto>(stavka);
-
-            return Ok(stavkaToReturn);
-        }
-
-        [HttpPost("fakture/add")]
-        public async Task<ActionResult<ZaglavljeRacunaDto>> AddZaglavlje(ZaglavljeRacunaDto zaglavljeRacunaDto)
-        {
-            if (await ZaglavljeExists(zaglavljeRacunaDto.Brojracuna)) return BadRequest("Broj racuna vec postoji");
+            if (await FakturaExists(zaglavljeRacunaDto.Brojracuna)) return BadRequest("Broj racuna vec postoji");
     
-            var zaglavlje = new ZaglavljeRacuna
+            var faktura = new ZaglavljeRacuna
             {
                 BrojRacuna = zaglavljeRacunaDto.Brojracuna,
                 DatumIsporuke = zaglavljeRacunaDto.Datumisporuke,
@@ -87,64 +67,25 @@ namespace api.Controllers
                 Napomena = zaglavljeRacunaDto.Napomena
             };
 
-            _context.ZaglavljeRacuna.Add(zaglavlje);
+            _context.ZaglavljeRacuna.Add(faktura);
             await _context.SaveChangesAsync();
 
             return new ZaglavljeRacunaDto
             {
-                Brojracuna = zaglavlje.BrojRacuna,
-                Datumisporuke = zaglavlje.DatumIsporuke,
-                Datumdokumenta = zaglavlje.DatumDokumenta,
-                Datumdospijeca = zaglavlje.DatumDospijeca,
-                Opis = zaglavlje.Opis,
-                Mjestoizdavanja = zaglavlje.MjestoIzdavanja,
-                Datumizdavanja = zaglavlje.DatumIzdavanja,
-                Fiskalnibroj = zaglavlje.FiskalniBroj,
-                Partnerid = zaglavlje.PartnerId,
-                Napomena = zaglavlje.Napomena
+                Brojracuna = faktura.BrojRacuna,
+                Datumisporuke = faktura.DatumIsporuke,
+                Datumdokumenta = faktura.DatumDokumenta,
+                Datumdospijeca = faktura.DatumDospijeca,
+                Opis = faktura.Opis,
+                Mjestoizdavanja = faktura.MjestoIzdavanja,
+                Datumizdavanja = faktura.DatumIzdavanja,
+                Fiskalnibroj = faktura.FiskalniBroj,
+                Partnerid = faktura.PartnerId,
+                Napomena = faktura.Napomena
             };
         }
 
-        [HttpPost("stavke/add")]
-        public async Task<ActionResult<StavkeRacunaDto>> AddStavku(StavkeRacunaDto stavkeRacunaDto)
-        {
-            var stavka = new StavkeRacuna
-            {
-                Opis = stavkeRacunaDto.Opis,
-                Kolicina = stavkeRacunaDto.Kolicina,
-                CijenaDeviza = stavkeRacunaDto.Cijenadeviza,
-                CijenaKM = stavkeRacunaDto.Cijenakm,
-                FakturnaVrijednost = stavkeRacunaDto.Fakturnavrijednost,
-                Rabat = stavkeRacunaDto.Rabat,
-                IznosRabata = stavkeRacunaDto.Iznosrabata,
-                Pdv = stavkeRacunaDto.Pdv,
-                IznosPdv = stavkeRacunaDto.Iznospdv,
-                Osnovica = stavkeRacunaDto.Osnovica,
-                UkupanIznos = stavkeRacunaDto.Ukupaniznos,
-                BrojRacuna = stavkeRacunaDto.Brojracuna
-            };
-
-            _context.StavkeRacuna.Add(stavka);
-            await _context.SaveChangesAsync();
-
-            return new StavkeRacunaDto
-            {
-                Opis = stavka.Opis,
-                Kolicina = stavka.Kolicina,
-                Cijenadeviza = stavka.CijenaDeviza,
-                Cijenakm = stavka.CijenaKM,
-                Fakturnavrijednost = stavka.FakturnaVrijednost,
-                Rabat = stavka.Rabat,
-                Iznosrabata = stavka.IznosRabata,
-                Pdv = stavka.Pdv,
-                Iznospdv = stavka.IznosPdv,
-                Osnovica = stavka.Osnovica,
-                Ukupaniznos = stavka.UkupanIznos,
-                Brojracuna = stavka.BrojRacuna
-            };
-        }
-
-        private async Task<bool> ZaglavljeExists(int brojRacuna)
+        private async Task<bool> FakturaExists(int brojRacuna)
         {
             return await _context.ZaglavljeRacuna.AnyAsync(x => x.BrojRacuna == brojRacuna);
         }
