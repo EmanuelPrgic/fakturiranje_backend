@@ -18,12 +18,10 @@ namespace api.Controllers
     public class FaktureController : BaseApiController
     {
 
-        private readonly DataContext _context;
         private readonly IFaktureRepository _faktureRepository;
         private readonly IMapper _mapper;
-        public FaktureController(DataContext context, IFaktureRepository faktureRepository, IMapper mapper)
+        public FaktureController(IFaktureRepository faktureRepository, IMapper mapper)
         {
-            _context = context;
             _faktureRepository = faktureRepository;
             _mapper = mapper;
         }
@@ -38,10 +36,10 @@ namespace api.Controllers
             return Ok(fakturaToReturn);
         }
 
-        [HttpGet("{brojracuna}")]
-        public async Task<ActionResult<IEnumerable<ZaglavljeRacunaDto>>> GetFakturuByBrojRacuna(int brojracuna)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<ZaglavljeRacunaDto>>> GetFakturuById(int id)
         {
-            var faktura = await _faktureRepository.GetFakturuByBrojRacuna(brojracuna);
+            var faktura = await _faktureRepository.GetFakturuById(id);
             
             var fakturaToReturn = _mapper.Map<ZaglavljeRacunaDto>(faktura);
 
@@ -51,43 +49,25 @@ namespace api.Controllers
         [HttpPost("add")]
         public async Task<ActionResult<ZaglavljeRacunaDto>> AddFakturu(ZaglavljeRacunaDto zaglavljeRacunaDto)
         {
-            if (await FakturaExists(zaglavljeRacunaDto.Brojracuna)) return BadRequest("Broj racuna vec postoji");
-    
-            var faktura = new ZaglavljeRacuna
-            {
-                BrojRacuna = zaglavljeRacunaDto.Brojracuna,
-                DatumIsporuke = zaglavljeRacunaDto.Datumisporuke,
-                DatumDokumenta = zaglavljeRacunaDto.Datumdokumenta,
-                DatumDospijeca = zaglavljeRacunaDto.Datumdospijeca,
-                Opis = zaglavljeRacunaDto.Opis,
-                MjestoIzdavanja = zaglavljeRacunaDto.Mjestoizdavanja,
-                DatumIzdavanja = zaglavljeRacunaDto.Datumizdavanja,
-                FiskalniBroj = zaglavljeRacunaDto.Fiskalnibroj,
-                PartnerId = zaglavljeRacunaDto.Partnerid,
-                Napomena = zaglavljeRacunaDto.Napomena
-            };
+            var faktura = await _faktureRepository.AddFakturu(zaglavljeRacunaDto);
 
-            _context.ZaglavljeRacuna.Add(faktura);
-            await _context.SaveChangesAsync();
-
-            return new ZaglavljeRacunaDto
-            {
-                Brojracuna = faktura.BrojRacuna,
-                Datumisporuke = faktura.DatumIsporuke,
-                Datumdokumenta = faktura.DatumDokumenta,
-                Datumdospijeca = faktura.DatumDospijeca,
-                Opis = faktura.Opis,
-                Mjestoizdavanja = faktura.MjestoIzdavanja,
-                Datumizdavanja = faktura.DatumIzdavanja,
-                Fiskalnibroj = faktura.FiskalniBroj,
-                Partnerid = faktura.PartnerId,
-                Napomena = faktura.Napomena
-            };
+            return Ok(faktura);
         }
 
-        private async Task<bool> FakturaExists(int brojRacuna)
+        [HttpPut("edit/{id}")]
+        public async Task<ActionResult> FakturaEdit(int id, ZaglavljeRacunaDto zaglavljeRacunaDto)
         {
-            return await _context.ZaglavljeRacuna.AnyAsync(x => x.BrojRacuna == brojRacuna);
+            var faktura = await _faktureRepository.FakturaUpdate(id, zaglavljeRacunaDto);
+
+            return NoContent();
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<ActionResult> FakturaDelete(int id)
+        {
+            var faktura = await _faktureRepository.FakturaDelete(id);
+
+            return NoContent();
         }
     }
 }

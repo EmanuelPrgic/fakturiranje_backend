@@ -17,13 +17,10 @@ namespace api.Controllers
 {
     public class UslugeController : BaseApiController
     {
-        private readonly DataContext _context;
-        private readonly IUslugeRepository _uslugeRepository;
-        
+        private readonly IUslugeRepository _uslugeRepository;        
         private readonly IMapper _mapper;
-        public UslugeController(DataContext context, IUslugeRepository uslugeRepository, IMapper mapper)
+        public UslugeController(IUslugeRepository uslugeRepository, IMapper mapper)
         {
-            _context = context;
             _uslugeRepository = uslugeRepository;
             _mapper = mapper;
         }
@@ -44,40 +41,38 @@ namespace api.Controllers
             return Ok(uslugaToReturn);
         }
         
+        [HttpPost("calculate/{id}")]
+        public async Task <ActionResult<StavkeRacuna>> CalculateVrijednostiAsync(int id)
+        {
+            var stavka = await _uslugeRepository.CalculateVrijednostiAsync(id);
+
+            return Ok(stavka);
+        }
+
         [HttpPost("add")]
         public async Task<ActionResult<StavkeRacunaDto>> AddUslugu(StavkeRacunaDto stavkeRacunaDto)
         {
-            if (await UslugaExists(stavkeRacunaDto.Id)) return BadRequest("Ovaj ID vec postoji!");
+            
+            var usluga = await _uslugeRepository.AddUslugu(stavkeRacunaDto);
 
-            var usluga = new StavkeRacuna
-            {
-                Opis = stavkeRacunaDto.Opis,
-                Kolicina = stavkeRacunaDto.Kolicina,
-                CijenaDeviza = stavkeRacunaDto.Cijenadeviza,
-                CijenaKM = stavkeRacunaDto.Cijenakm,
-                Rabat = stavkeRacunaDto.Rabat,
-                Pdv = stavkeRacunaDto.Pdv,
-                BrojRacuna = stavkeRacunaDto.Brojracuna
-            };
-
-            _context.StavkeRacuna.Add(usluga);
-            await _context.SaveChangesAsync();
-
-            return new StavkeRacunaDto
-            {
-                Opis = usluga.Opis,
-                Kolicina = usluga.Kolicina,
-                Cijenadeviza = usluga.CijenaDeviza,
-                Cijenakm = usluga.CijenaKM,
-                Rabat = usluga.Rabat,
-                Pdv = usluga.Pdv,
-                Brojracuna = usluga.BrojRacuna
-            };
+            return Ok(usluga);
         }
 
-        private async Task<bool> UslugaExists(int id)
+        [HttpPut("edit/{id}")]
+        public async Task<ActionResult> UslugaUpdate(int id, UslugaUpdateDto uslugaUpdateDto)
         {
-            return await _context.StavkeRacuna.AnyAsync(x => x.Id == id);
+            var result = await _uslugeRepository.UslugaUpdate(id, uslugaUpdateDto);
+
+            return NoContent();
         }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<ActionResult> UslugaDelete(int id)
+        {
+            await _uslugeRepository.UslugaDelete(id);
+
+            return NoContent();
+        }
+
     }
 }

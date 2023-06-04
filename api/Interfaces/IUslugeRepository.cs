@@ -9,9 +9,12 @@ namespace api.Interfaces
 {
     public interface IUslugeRepository
     {
-        void UslugaUpdate(StavkeRacuna stavkeRacuna);
+        Task<bool> UslugaUpdate(int id, UslugaUpdateDto uslugaUpdateDto);
+        Task<bool> UslugaDelete(int id);
         Task<bool> SaveAllAsync();
         Task<IEnumerable<StavkeRacuna>> GetUslugeAsync();
         Task<StavkeRacuna> GetUsluguById(int id);
+        Task<StavkeRacunaDto> AddUslugu(StavkeRacunaDto stavkeRacunaDto);
+        Task<StavkeRacuna> CalculateVrijednostiAsync(int id);
     }
 }

@@ -37,10 +37,10 @@ namespace api.Controllers
             return Ok(partnersToReturn);
         }
 
-        [HttpGet("{name}")]
-        public async Task<ActionResult<PartnerDto>> GetUser(string name)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PartnerDto>> GetUser(int id)
         {
-            var partner = await _partnerRepository.GetPartnerByNameAsync(name);
+            var partner = await _partnerRepository.GetPartnerByIdAsync(id);
 
             return _mapper.Map<PartnerDto>(partner);
         }
@@ -48,48 +48,25 @@ namespace api.Controllers
         [HttpPost("add")]
         public async Task<ActionResult<PartnerDto>> AddPartner(PartnerDto partnerDto)
         {
-            if (await PartnerExists(partnerDto.Naziv)) return BadRequest("Name already taken!");
+            var partner = await _partnerRepository.AddPartner(partnerDto);
 
-            var partner = new Partner
-            {
-                Naziv = partnerDto.Naziv.ToLower(),
-                Adresa = partnerDto.Adresa,
-                Mjesto = partnerDto.Mjesto,
-                BrojPoste = partnerDto.Brojposte,
-                Mb = partnerDto.Mb,
-                Pdv = partnerDto.Pdv,
-                BankaJedan = partnerDto.Bankajedan,
-                BankaDva = partnerDto.Bankadva,
-                BankaTri = partnerDto.Bankatri,
-                Swift = partnerDto.Swift,
-                Tip = partnerDto.Tip,
-                Drzava = partnerDto.Drzava
-            };
-
-            _context.Partneri.Add(partner);
-            await _context.SaveChangesAsync();
-
-            return new PartnerDto
-            {
-                Naziv = partner.Naziv,
-                Adresa = partner.Adresa,
-                Mjesto = partner.Mjesto,
-                Brojposte = partner.BrojPoste,
-                Mb = partner.Mb,
-                Pdv = partner.Pdv,
-                Bankajedan = partner.BankaJedan,
-                Bankadva = partner.BankaDva,
-                Bankatri = partner.BankaTri,
-                Swift = partner.Swift,
-                Tip = partner.Tip,
-                Drzava = partner.Drzava
-            };
+            return Ok(partner);
         }
 
-        private async Task<bool> PartnerExists(string name)
+        [HttpPut("edit/{id}")]
+        public async Task<ActionResult> PartnerUpdate(int id, PartnerDto partnerDto)
         {
-            return await _context.Partneri.AnyAsync(x => x.Naziv == name.ToLower());
-        }
-        
+            var result = await _partnerRepository.PartnerUpdate(id, partnerDto);
+
+            return NoContent();
+        }     
+
+        [HttpDelete("delete/{id}")]
+        public async Task<ActionResult> PartnerDelete(int id)
+        {
+            var result = await _partnerRepository.PartnerDelete(id);
+
+            return NoContent();
+        } 
     }
 }

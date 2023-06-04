@@ -6,6 +6,7 @@ namespace api.DTOs
 {
     public class ZaglavljeRacunaDto
     {
+        public int Id { get; set; }
         [Required]
         public int Brojracuna { get; set; }
         [Required]

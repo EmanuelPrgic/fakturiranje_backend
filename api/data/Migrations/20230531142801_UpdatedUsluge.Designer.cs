@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.data;
 
@@ -10,9 +11,11 @@ using api.data;
 namespace api.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230531142801_UpdatedUsluge")]
+    partial class UpdatedUsluge
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
@@ -93,11 +96,11 @@ namespace api.Data.Migrations
                     b.Property<int>("BrojRacuna")
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("CijenaDeviza")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("CijenaDeviza")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("CijenaKM")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("CijenaKM")
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("FakturnaVrijednost")
                         .HasColumnType("TEXT");
@@ -117,11 +120,11 @@ namespace api.Data.Migrations
                     b.Property<decimal>("Osnovica")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Pdv")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Pdv")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("Rabat")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Rabat")
+                        .HasColumnType("INTEGER");
 
                     b.Property<decimal>("UkupanIznos")
                         .HasColumnType("TEXT");

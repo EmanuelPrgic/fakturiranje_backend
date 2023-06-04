@@ -13,8 +13,13 @@ namespace api.Helper
         public AutoMapperProfiles()
         {
             CreateMap<Partner, PartnerDto>();
+            CreateMap<PartnerDto, Partner>();
             CreateMap<ZaglavljeRacuna, ZaglavljeRacunaDto>();
+            CreateMap<ZaglavljeRacunaDto, ZaglavljeRacuna>();
             CreateMap<StavkeRacuna, StavkeRacunaDto>();
+            CreateMap<StavkeRacunaDto, StavkeRacuna>();
+            CreateMap<StavkeRacuna, UslugaUpdateDto>();
+            CreateMap<UslugaUpdateDto, StavkeRacuna>();
         }
     }
 }
